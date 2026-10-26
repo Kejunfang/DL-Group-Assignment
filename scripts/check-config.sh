@@ -32,6 +32,7 @@ fi
 has "rule 1: Chinese conversation, English reports" '中文.*英文|英文.*报告'
 has "rule 2: karpathy-guidelines skill" 'karpathy-guidelines'
 has "rule 3: commit on every change" 'git commit'
+has "rule 3b: config updated on important changes" '重要变动必须回写本文件'
 has "rule 4: test + simulate before commit" '测试.*模拟'
 has "rule 5a: requirement/tech doc linked" '1gtXetjRMJPsyf2Oy3_ry1-jAWAEhTNbjVmHc7na862s'
 has "rule 5b: assignment guideline path" 'CSC60904-Deep Learning Group Assignment 30%\.pdf'
