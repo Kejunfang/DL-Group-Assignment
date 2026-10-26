@@ -49,10 +49,12 @@ if [ -d "$code_dir" ]; then
   echo "PASS: code/ directory present"
   notebooks="$(find "$code_dir" -maxdepth 1 -type f -name '*.ipynb' | sort)"
   count="$(printf '%s\n' "$notebooks" | grep -c . || true)"
-  if [ "$count" -eq 1 ]; then
+  if [ "$count" -eq 0 ]; then
+    echo "PASS: no .ipynb yet in code/ (allowed during development; final must have exactly one)"
+  elif [ "$count" -eq 1 ]; then
     echo "PASS: exactly one .ipynb in code/ ($(basename "$notebooks"))"
   else
-    echo "FAIL: expected exactly one .ipynb in code/, found $count"
+    echo "FAIL: expected at most one .ipynb in code/, found $count"
     fail=1
   fi
 else

@@ -9,3 +9,6 @@ __pycache__/
 
 # Node
 node_modules/
+
+# Reference only (old defective notebook, never part of the submission)
+old_code/

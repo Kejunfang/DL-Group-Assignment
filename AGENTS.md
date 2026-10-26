@@ -36,7 +36,7 @@
 | A | 客户需求文档 + 技术文档 | https://docs.google.com/document/d/1gtXetjRMJPsyf2Oy3_ry1-jAWAEhTNbjVmHc7na862s/edit?tab=t.0#heading=h.s3by5ebukh2x | **时刻关注**。每次 commit 前必须对照核对本次改动是否满足要求。发现不符合 → 先告知用户，**禁止 commit**；改好并通过核对后才允许 commit。 |
 | B | Assignment guideline（最全的 guideline，最终验收标准） | `/Users/hill/Desktop/Work/DL Group Assignment/CSC60904-Deep Learning Group Assignment 30%.pdf` | **平时不读**。只在准备提交最终成果前才通读，并逐条核对所有产出是否符合该 guideline。 |
 | C | Report 撰写位置 | https://docs.google.com/document/d/1TewRPdkWW4jRivSg-_MLOrYXNsRWVOR0tHExsaQ_LjQ/edit?tab=t.0 | 所有 report 正文最终写进这个 Google Doc。**agent 默认只读**：只给英文草稿与修改建议，未经用户明确授权，不得写入或改动该文档。 |
-| D | 代码（Coding Component） | `code/`（最终提交：`code/Group_8_Image_Recognition.ipynb`；现有 `code/Group_8_Image_Recognition-12_ver1.ipynb` 为朋友版本，**存在缺陷，仅作参考，不得作为提交物**） | **唯一代码来源**：新代码由用户从零编写，全部 Python 代码只放在 `code/` 下的这一个 notebook，不在仓库其他位置零散存放副本。新 notebook 落地前，先把 ver1 移出 `code/`（或删除），确保 `code/` 始终只有一份 `.ipynb`（`scripts/check-config.sh` 强制检查）。按文档 A 要求，最终提交为单文件 `Group_8_Image_Recognition.ipynb`（`NO`=组号 8）并复查注释完整性。 |
+| D | 代码（Coding Component） | `code/`（最终提交：`code/Group_8_Image_Recognition.ipynb`）。旧版 ver1 已移到 `old_code/`，**存在缺陷，仅作参考，不得作为提交物**，已被 `.gitignore` 排除。 | **唯一代码来源**：新代码由用户从零编写，全部 Python 代码只放在 `code/` 下的 notebook，不在仓库其他位置零散存放副本。开发期 `code/` 可以为空，但最多只能有一份 `.ipynb`（`scripts/check-config.sh` 强制检查）；最终提交为单文件 `Group_8_Image_Recognition.ipynb`（`NO`=组号 8）并复查注释完整性。 |
 
 补充约束：
 
