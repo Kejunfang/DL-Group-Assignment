@@ -21,11 +21,11 @@ if [ ! -f "$cfg" ]; then
   exit 1
 fi
 
-sections="$(grep -Ec '^## [1-5]\. ' "$cfg" || true)"
-if [ "$sections" -eq 5 ]; then
-  echo "PASS: 5 numbered rule sections present"
+sections="$(grep -Ec '^## [1-6]\. ' "$cfg" || true)"
+if [ "$sections" -eq 6 ]; then
+  echo "PASS: 6 numbered rule sections present"
 else
-  echo "FAIL: expected 5 numbered rule sections, found $sections"
+  echo "FAIL: expected 6 numbered rule sections, found $sections"
   fail=1
 fi
 
@@ -40,6 +40,8 @@ has "rule 5d: no cached requirements copy" '禁止在仓库里缓存'
 has "rule 5e: doc A date is internal, not assignment deadline" '内部截止日期'
 has "rule 5f: report doc read-only unless authorized" '默认只读'
 has "rule 5g: code source registered as code/" 'code/'
+has "rule 6a: local tests use conda dev" 'conda activate dev'
+has "rule 6b: Colab is the delivery runtime" 'Google Colab'
 
 code_dir="$root/code"
 if [ -d "$code_dir" ]; then

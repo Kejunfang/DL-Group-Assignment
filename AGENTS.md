@@ -46,6 +46,12 @@
 - A 是需求的实时来源，禁止在仓库里缓存/复制一份需求文本当依据（会过期）。
 - B 只在最终提交前整体核对，避免日常按局部 guideline 误判范围。
 
+## 6. 本地测试环境：conda dev
+
+- 任何在本地执行的 Python 测试、校验或代码检查，必须先 `conda activate dev`，不要在 `base` 环境里跑项目代码。
+- 缺少依赖时由 agent 直接用 conda 安装到 `dev`（优先 `-c conda-forge`），装完复跑 import 验证；安装不得破坏已装好的 tensorflow / keras / numpy。
+- 本地 `dev` 仅用于自测；最终交付的运行环境以文档 A 为准（Google Colab），本地环境差异不得成为改变交付要求的理由。
+
 ## 提交前自查清单
 
 - [ ] 本次改动对应用户的哪个请求？
