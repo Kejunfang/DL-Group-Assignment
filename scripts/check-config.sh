@@ -74,6 +74,14 @@ else
   fail=1
 fi
 
+notebook="$code_dir/Group_8_Image_Recognition.ipynb"
+if [ -f "$notebook" ] && grep -q 'siim2020' "$notebook"; then
+  echo "FAIL: notebook still loads the dropped SIIM-ISIC 2020 dataset"
+  fail=1
+else
+  echo "PASS: notebook no longer loads the dropped SIIM-ISIC 2020 dataset"
+fi
+
 if [ "$fail" -eq 0 ]; then
   echo "RESULT: PASS"
 else
