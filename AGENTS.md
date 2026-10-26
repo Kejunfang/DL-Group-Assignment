@@ -28,11 +28,29 @@
 - 项目暂无可运行的测试时，先补一个最小自动校验脚本，并在提交说明中写清已执行了哪些检查。
 - 本项目配置自检脚本：`bash scripts/check-config.sh`，退出码为 0 才算通过。
 
+## 5. 项目资料与权威来源（按用途区分，不要混用）
+
+| # | 资料 | 位置 | 使用时机与规则 |
+|---|------|------|----------------|
+| A | 客户需求文档 + 技术文档 | https://docs.google.com/document/d/1gtXetjRMJPsyf2Oy3_ry1-jAWAEhTNbjVmHc7na862s/edit?tab=t.0#heading=h.s3by5ebukh2x | **时刻关注**。每次 commit 前必须对照核对本次改动是否满足要求。发现不符合 → 先告知用户，**禁止 commit**；改好并通过核对后才允许 commit。 |
+| B | Assignment guideline（最全的 guideline，最终验收标准） | `/Users/hill/Desktop/Work/DL Group Assignment/CSC60904-Deep Learning Group Assignment 30%.pdf` | **平时不读**。只在准备提交最终成果前才通读，并逐条核对所有产出是否符合该 guideline。 |
+| C | Report 撰写位置 | https://docs.google.com/document/d/1TewRPdkWW4jRivSg-_MLOrYXNsRWVOR0tHExsaQ_LjQ/edit?tab=t.0 | 所有 report 正文都写进这个 Google Doc；本地文件只作草稿。 |
+
+补充约束：
+
+- A 与 C 可公开只读，取全文用：`curl -sL "https://docs.google.com/document/d/<DOC_ID>/export?format=txt"`。核对 A 是强制门禁，不是可选项。
+- 若 A 无法访问或内容不明确：立即告知用户，不要凭记忆假设要求，也不要继续 commit。
+- A 是需求的实时来源，禁止在仓库里缓存/复制一份需求文本当依据（会过期）。
+- B 只在最终提交前整体核对，避免日常按局部 guideline 误判范围。
+
 ## 提交前自查清单
 
 - [ ] 本次改动对应用户的哪个请求？
 - [ ] 是否已加载 karpathy-guidelines 并按其四步执行？
 - [ ] 测试通过？模拟（dry-run）通过？
+- [ ] 已核对需求文档 A，本次改动没有不符合项？（有不符合项时先告知用户并停止 commit）
+- [ ] 若本次是最终成果提交：已通读 guideline B 并逐条核对？
+- [ ] report 内容写到文档 C，没有只留在本地？
 - [ ] 是否只包含本次改动，没有无关文件？
 - [ ] commit message 为英文且格式正确？
 - [ ] 给用户的结论/报告是英文，过程交流是中文？

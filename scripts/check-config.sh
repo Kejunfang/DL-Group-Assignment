@@ -21,11 +21,11 @@ if [ ! -f "$cfg" ]; then
   exit 1
 fi
 
-sections="$(grep -Ec '^## [1-4]\. ' "$cfg" || true)"
-if [ "$sections" -eq 4 ]; then
-  echo "PASS: 4 numbered rule sections present"
+sections="$(grep -Ec '^## [1-5]\. ' "$cfg" || true)"
+if [ "$sections" -eq 5 ]; then
+  echo "PASS: 5 numbered rule sections present"
 else
-  echo "FAIL: expected 4 numbered rule sections, found $sections"
+  echo "FAIL: expected 5 numbered rule sections, found $sections"
   fail=1
 fi
 
@@ -33,6 +33,10 @@ has "rule 1: Chinese conversation, English reports" '中文.*英文|英文.*报�
 has "rule 2: karpathy-guidelines skill" 'karpathy-guidelines'
 has "rule 3: commit on every change" 'git commit'
 has "rule 4: test + simulate before commit" '测试.*模拟'
+has "rule 5a: requirement/tech doc linked" '1gtXetjRMJPsyf2Oy3_ry1-jAWAEhTNbjVmHc7na862s'
+has "rule 5b: assignment guideline path" 'CSC60904-Deep Learning Group Assignment 30%\.pdf'
+has "rule 5c: report doc linked" '1TewRPdkWW4jRivSg-_MLOrYXNsRWVOR0tHExsaQ_LjQ'
+has "rule 5d: no cached requirements copy" '禁止在仓库里缓存'
 
 if grep -q '^\.DS_Store$' "$root/.gitignore" 2>/dev/null; then
   echo "PASS: .DS_Store ignored"
