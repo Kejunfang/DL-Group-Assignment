@@ -39,6 +39,23 @@ has "rule 5c: report doc linked" '1TewRPdkWW4jRivSg-_MLOrYXNsRWVOR0tHExsaQ_LjQ'
 has "rule 5d: no cached requirements copy" '禁止在仓库里缓存'
 has "rule 5e: doc A date is internal, not assignment deadline" '内部截止日期'
 has "rule 5f: report doc read-only unless authorized" '默认只读'
+has "rule 5g: code source registered as code/" 'code/'
+
+code_dir="$root/code"
+if [ -d "$code_dir" ]; then
+  echo "PASS: code/ directory present"
+  notebooks="$(find "$code_dir" -maxdepth 1 -type f -name '*.ipynb' | sort)"
+  count="$(printf '%s\n' "$notebooks" | grep -c . || true)"
+  if [ "$count" -eq 1 ]; then
+    echo "PASS: exactly one .ipynb in code/ ($(basename "$notebooks"))"
+  else
+    echo "FAIL: expected exactly one .ipynb in code/, found $count"
+    fail=1
+  fi
+else
+  echo "FAIL: code/ directory not found"
+  fail=1
+fi
 
 if grep -q '^\.DS_Store$' "$root/.gitignore" 2>/dev/null; then
   echo "PASS: .DS_Store ignored"
