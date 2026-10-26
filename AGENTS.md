@@ -54,7 +54,7 @@
 - 任何在本地执行的 Python 测试、校验或代码检查，必须先 `conda activate dev`，不要在 `base` 环境里跑项目代码。
 - 缺少依赖时由 agent 直接用 conda 安装到 `dev`（优先 `-c conda-forge`），装完复跑 import 验证；安装不得破坏已装好的 tensorflow / keras / numpy。
 - 本地 `dev` 仅用于自测；最终交付的运行环境以文档 A 为准（Google Colab），本地环境差异不得成为改变交付要求的理由。
-- **数据路径与本地运行**：数据集可以下载到本地 `data/raw`（已 git 忽略）做数据准备与调试，但训练与出图以 Colab 为准；notebook 只用 `DATA_ROOT` / `CACHE_ROOT` / `OUT_DIR` 三个变量拼路径，禁止硬编码个人绝对路径；生成物写入 `outputs/`（已 git 忽略）。
+- **数据路径与本地运行**：三个数据集由用户**手动从 Kaggle 下载并解压进项目 `data/`**（`data/` 已 git 忽略），notebook 不写自动下载代码；notebook 只用 `DATA_ROOT` / `OUT_DIR` 变量拼路径，禁止硬编码个人绝对路径；生成物写入 `outputs/`（已 git 忽略）。训练与出图仍以 Colab 为准。
 
 ## 提交前自查清单
 

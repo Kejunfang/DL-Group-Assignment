@@ -45,7 +45,7 @@ has "rule 5h: single TensorFlow/Keras stack" '统一使用 TensorFlow / Keras'
 has "rule 5i: three-dataset and label plan recorded" 'SIIM-ISIC 2020'
 has "rule 6a: local tests use conda dev" 'conda activate dev'
 has "rule 6b: Colab is the delivery runtime" 'Google Colab'
-has "rule 6c: data roots configurable, no absolute paths" 'DATA_ROOT.*CACHE_ROOT.*OUT_DIR'
+has "rule 6c: data roots configurable, no absolute paths" 'DATA_ROOT.*OUT_DIR'
 
 code_dir="$root/code"
 if [ -d "$code_dir" ]; then
