@@ -48,14 +48,14 @@
 - B 只在最终提交前整体核对，避免日常按局部 guideline 误判范围。
 - **项目可整体搬移**：仓库内一律使用相对项目根目录的路径，不得写入个人主目录的绝对路径（即 `~` 展开后的路径）；整个文件夹可移动到任意目录，移动后必须复核 `git status`（应为 clean）与 `bash scripts/check-config.sh`（应 PASS）。`data/`、`old_code/`、`outputs/` 不在 git 里，搬移或换机器时必须单独拷贝 `data/`，否则 notebook 找不到数据集。
 - **技术栈（已定）**：Part 2 统一使用 TensorFlow / Keras 单一栈（Colab 预装），不写 PyTorch 训练代码；文档 A 2.2 提到的 `requires_grad / backward()` 只在报告中作文字对比，不作为实现路径。
-- **数据集与标签方案（已定）**：三个数据集全部使用。ISIC 2018 Task 3 = 训练/验证/测试（7 类，病灶级切分）；ISIC 2019 = 外部验证（8→7 类映射，排除 SCC，须与 2018 做 hash 去重）；SIIM-ISIC 2020 = 域外测试（按病人切分，折叠为 malignant = MEL+BCC+AKIEC，报 AUC 与指定特异度下敏感度）。全项目统一 7 类标签空间：`MEL, NV, BCC, AKIEC, BKL, DF, VASC`。
+- **数据集与标签方案（已定）**：使用两个数据集。ISIC 2018（HAM10000，Task 3，10,015 张图 + `HAM10000_metadata.csv`）= 训练/验证/测试（7 类，病灶级切分）；ISIC 2019（25,331 张图 + `ISIC_2019_Training_GroundTruth.csv`，8 类，AKIEC 列名为 `AK`）= 外部验证（8→7 类映射，排除 SCC，须与 2018 做 hash 去重）。**SIIM-ISIC 2020 不使用**：原始数据 100GB 以上，用户明确决定暂不下载；文档 A 将其列为第 3 个数据集，故这是**明确的偏离**，必须在 report 的数据集部分写明未使用原因。全项目统一 7 类标签空间：`MEL, NV, BCC, AKIEC, BKL, DF, VASC`。
 
 ## 6. 本地测试环境：conda dev
 
 - 任何在本地执行的 Python 测试、校验或代码检查，必须先 `conda activate dev`，不要在 `base` 环境里跑项目代码。
 - 缺少依赖时由 agent 直接用 conda 安装到 `dev`（优先 `-c conda-forge`），装完复跑 import 验证；安装不得破坏已装好的 tensorflow / keras / numpy。
 - 本地 `dev` 仅用于自测；最终交付的运行环境以文档 A 为准（Google Colab），本地环境差异不得成为改变交付要求的理由。
-- **数据路径与本地运行**：三个数据集由用户**手动从 Kaggle 下载并解压进项目 `data/`**（`data/` 已 git 忽略），notebook 不写自动下载代码；notebook 只用 `DATA_ROOT` / `OUT_DIR` 变量拼路径，禁止硬编码个人绝对路径；生成物写入 `outputs/`（已 git 忽略）。训练与出图仍以 Colab 为准。
+- **数据路径与本地运行**：两个数据集由用户**手动从 Kaggle 下载并解压进项目 `data/`**（`data/` 已 git 忽略），notebook 不写自动下载代码。本地实际布局：`data/ISIC 2018/` = HAM10000（`HAM10000_metadata.csv` + 10,015 张 jpg，允许嵌套子目录；随包下载的 Task 1-2 分割图与掩码不属于本 assignment 的分类任务，可保留也可删除）；`data/ISIC 2019/` = 8 类训练集（`ISIC_2019_Training_GroundTruth.csv` + 25,331 张 jpg，按类分子目录）。notebook 一律用 `DATA_ROOT` / `OUT_DIR` 变量拼路径并用 `rglob` 递归查找文件，禁止硬编码个人绝对路径；生成物写入 `outputs/`（已 git 忽略）。训练与出图仍以 Colab 为准。
 
 ## 提交前自查清单
 
