@@ -41,6 +41,8 @@ has "rule 5d: no cached requirements copy" '禁止在仓库里缓存'
 has "rule 5e: doc A date is internal, not assignment deadline" '内部截止日期'
 has "rule 5f: report doc read-only unless authorized" '默认只读'
 has "rule 5g: code source registered as code/" 'code/'
+has "rule 5h: single TensorFlow/Keras stack" '统一使用 TensorFlow / Keras'
+has "rule 5i: three-dataset and label plan recorded" 'SIIM-ISIC 2020'
 has "rule 6a: local tests use conda dev" 'conda activate dev'
 has "rule 6b: Colab is the delivery runtime" 'Google Colab'
 

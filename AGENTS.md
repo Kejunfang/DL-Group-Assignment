@@ -46,6 +46,8 @@
 - 若 A 无法访问或内容不明确：立即告知用户，不要凭记忆假设要求，也不要继续 commit。
 - A 是需求的实时来源，禁止在仓库里缓存/复制一份需求文本当依据（会过期）。
 - B 只在最终提交前整体核对，避免日常按局部 guideline 误判范围。
+- **技术栈（已定）**：Part 2 统一使用 TensorFlow / Keras 单一栈（Colab 预装），不写 PyTorch 训练代码；文档 A 2.2 提到的 `requires_grad / backward()` 只在报告中作文字对比，不作为实现路径。
+- **数据集与标签方案（已定）**：三个数据集全部使用。ISIC 2018 Task 3 = 训练/验证/测试（7 类，病灶级切分）；ISIC 2019 = 外部验证（8→7 类映射，排除 SCC，须与 2018 做 hash 去重）；SIIM-ISIC 2020 = 域外测试（按病人切分，折叠为 malignant = MEL+BCC+AKIEC，报 AUC 与指定特异度下敏感度）。全项目统一 7 类标签空间：`MEL, NV, BCC, AKIEC, BKL, DF, VASC`。
 
 ## 6. 本地测试环境：conda dev
 
