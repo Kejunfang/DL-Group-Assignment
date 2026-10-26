@@ -34,7 +34,7 @@
 | # | 资料 | 位置 | 使用时机与规则 |
 |---|------|------|----------------|
 | A | 客户需求文档 + 技术文档 | https://docs.google.com/document/d/1gtXetjRMJPsyf2Oy3_ry1-jAWAEhTNbjVmHc7na862s/edit?tab=t.0#heading=h.s3by5ebukh2x | **时刻关注**。每次 commit 前必须对照核对本次改动是否满足要求。发现不符合 → 先告知用户，**禁止 commit**；改好并通过核对后才允许 commit。 |
-| B | Assignment guideline（最全的 guideline，最终验收标准） | `/Users/hill/Desktop/Work/DL Group Assignment/CSC60904-Deep Learning Group Assignment 30%.pdf` | **平时不读**。只在准备提交最终成果前才通读，并逐条核对所有产出是否符合该 guideline。 |
+| B | Assignment guideline（最全的 guideline，最终验收标准） | 项目根目录下的 `CSC60904-Deep Learning Group Assignment 30%.pdf`（相对路径，随项目一起移动） | **平时不读**。只在准备提交最终成果前才通读，并逐条核对所有产出是否符合该 guideline。 |
 | C | Report 撰写位置 | https://docs.google.com/document/d/1TewRPdkWW4jRivSg-_MLOrYXNsRWVOR0tHExsaQ_LjQ/edit?tab=t.0 | 所有 report 正文最终写进这个 Google Doc。**agent 默认只读**：只给英文草稿与修改建议，未经用户明确授权，不得写入或改动该文档。 |
 | D | 代码（Coding Component） | `code/`（最终提交：`code/Group_8_Image_Recognition.ipynb`）。旧版 ver1 已移到 `old_code/`，**存在缺陷，仅作参考，不得作为提交物**，已被 `.gitignore` 排除。 | **唯一代码来源**：新代码由用户从零编写，全部 Python 代码只放在 `code/` 下的 notebook，不在仓库其他位置零散存放副本。开发期 `code/` 可以为空，但最多只能有一份 `.ipynb`（`scripts/check-config.sh` 强制检查）；最终提交为单文件 `Group_8_Image_Recognition.ipynb`（`NO`=组号 8）并复查注释完整性。 |
 
@@ -46,6 +46,7 @@
 - 若 A 无法访问或内容不明确：立即告知用户，不要凭记忆假设要求，也不要继续 commit。
 - A 是需求的实时来源，禁止在仓库里缓存/复制一份需求文本当依据（会过期）。
 - B 只在最终提交前整体核对，避免日常按局部 guideline 误判范围。
+- **项目可整体搬移**：仓库内一律使用相对项目根目录的路径，不得写入个人主目录的绝对路径（即 `~` 展开后的路径）；整个文件夹可移动到任意目录，移动后必须复核 `git status`（应为 clean）与 `bash scripts/check-config.sh`（应 PASS）。`data/`、`old_code/`、`outputs/` 不在 git 里，搬移或换机器时必须单独拷贝 `data/`，否则 notebook 找不到数据集。
 - **技术栈（已定）**：Part 2 统一使用 TensorFlow / Keras 单一栈（Colab 预装），不写 PyTorch 训练代码；文档 A 2.2 提到的 `requires_grad / backward()` 只在报告中作文字对比，不作为实现路径。
 - **数据集与标签方案（已定）**：三个数据集全部使用。ISIC 2018 Task 3 = 训练/验证/测试（7 类，病灶级切分）；ISIC 2019 = 外部验证（8→7 类映射，排除 SCC，须与 2018 做 hash 去重）；SIIM-ISIC 2020 = 域外测试（按病人切分，折叠为 malignant = MEL+BCC+AKIEC，报 AUC 与指定特异度下敏感度）。全项目统一 7 类标签空间：`MEL, NV, BCC, AKIEC, BKL, DF, VASC`。
 
