@@ -56,6 +56,7 @@
 - 任何 Python 执行必须先 `conda activate dev`，不要在 `base` 环境里跑项目代码；notebook 不依赖 Colab 专有 API（不 import `google.colab`），保持纯 TensorFlow / Keras + 相对路径即可运行。
 - 缺少依赖时由 agent 直接用 conda 安装到 `dev`（优先 `-c conda-forge`），装完复跑 import 验证；安装不得破坏已装好的 tensorflow / keras / numpy。
 - **算力约束**：本机为 Apple M4、CPU-only（TF 看不到 GPU），ResNet-50 @224 训练约 5.6–6.7 张/秒，全量微调 1 epoch 约 25–30 分钟；训练必须逐 epoch 保存 checkpoint 并支持断点续训，时间不够时优先减少 epoch 或冻结主干，而不是降低评估口径。
+- **已定训练配方（2026-10-27，用户指定 epochs = 100）**：batch 32；stage A 冻结主干 3 epochs @ Adam `1e-3`；stage B 解冻 `conv4`/`conv5`（BatchNorm 全程冻结）97 epochs，cosine `3e-5 → 1e-6`；loss 用普通 one-hot categorical cross-entropy（不做类权重）；按 val accuracy 选最优 checkpoint（平局取更早 epoch），并额外记录 val macro F1 供分析。实测只微调 conv4/conv5 时约 6 分钟/epoch，100 epochs 合计约 10 小时；数据缓存复用 `outputs/cache/`，跑前不要删除，训练产物在 `outputs/model/`（`last.weights.h5` 用于断点续训，`best.weights.h5` 用于评估）。
 - **数据路径与本地运行**：两个数据集由用户**手动从 Kaggle 下载并解压进项目 `data/`**（`data/` 已 git 忽略），notebook 不写自动下载代码。本地实际布局：`data/ISIC 2018/` = HAM10000（`HAM10000_metadata.csv` + 10,015 张 jpg，允许嵌套子目录；随包下载的 Task 1-2 分割图与掩码不属于本 assignment 的分类任务，可保留也可删除）；`data/ISIC 2019/` = 8 类训练集（`ISIC_2019_Training_GroundTruth.csv` + 25,331 张 jpg，按类分子目录）。notebook 一律用 `DATA_ROOT` / `OUT_DIR` 变量拼路径并用 `rglob` 递归查找文件，禁止硬编码个人绝对路径；生成物写入 `outputs/`（已 git 忽略）。训练与出图在本地 `conda dev` 完成。
 
 ## 提交前自查清单
