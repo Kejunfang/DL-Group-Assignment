@@ -43,10 +43,10 @@ has "rule 5f: report doc read-only unless authorized" '默认只读'
 has "rule 5g: code source registered as code/" 'code/'
 has "rule 5h: single TensorFlow/Keras stack" '统一使用 TensorFlow / Keras'
 has "rule 5i: two-dataset label plan recorded" '使用两个数据集'
-has "rule 5k: dropped SIIM-ISIC 2020 recorded as an explicit deviation" 'SIIM-ISIC 2020 不使用'
+has "rule 5k: SIIM-ISIC 2020 marked Not Use in doc A" 'SIIM-ISIC 2020.*Not Use'
 has "rule 5j: repository is relocatable" '项目可整体搬移'
 has "rule 6a: local tests use conda dev" 'conda activate dev'
-has "rule 6b: Colab is the delivery runtime" 'Google Colab'
+has "rule 6b: local conda dev is the delivery runtime" '交付运行环境为本地'
 has "rule 6c: data roots configurable, no absolute paths" 'DATA_ROOT.*OUT_DIR'
 
 code_dir="$root/code"
