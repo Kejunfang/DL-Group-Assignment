@@ -34,10 +34,12 @@
 |---|------|------|----------------|
 | A | 客户需求文档 + 技术文档 | https://docs.google.com/document/d/1gtXetjRMJPsyf2Oy3_ry1-jAWAEhTNbjVmHc7na862s/edit?tab=t.0#heading=h.s3by5ebukh2x | **时刻关注**。每次 commit 前必须对照核对本次改动是否满足要求。发现不符合 → 先告知用户，**禁止 commit**；改好并通过核对后才允许 commit。 |
 | B | Assignment guideline（最全的 guideline，最终验收标准） | `/Users/hill/Desktop/Work/DL Group Assignment/CSC60904-Deep Learning Group Assignment 30%.pdf` | **平时不读**。只在准备提交最终成果前才通读，并逐条核对所有产出是否符合该 guideline。 |
-| C | Report 撰写位置 | https://docs.google.com/document/d/1TewRPdkWW4jRivSg-_MLOrYXNsRWVOR0tHExsaQ_LjQ/edit?tab=t.0 | 所有 report 正文都写进这个 Google Doc；本地文件只作草稿。 |
+| C | Report 撰写位置 | https://docs.google.com/document/d/1TewRPdkWW4jRivSg-_MLOrYXNsRWVOR0tHExsaQ_LjQ/edit?tab=t.0 | 所有 report 正文最终写进这个 Google Doc。**agent 默认只读**：只给英文草稿与修改建议，未经用户明确授权，不得写入或改动该文档。 |
 
 补充约束：
 
+- 文档 A 中的 `Due date: 08th November 2026` 是组员把各自完成的部分交给组长的**内部截止日期**，**不是** assignment 的最终提交日期。assignment 的最终截止日期以文档 C 为准，且每次都以实时读取的文档为准。
+- 文档 C 的写入权限由用户掌握：agent 默认维持只读，只给建议（改动点、理由、可直接粘贴的英文段落）；只有用户明确授权后才可以协助写入。
 - A 与 C 可公开只读，取全文用：`curl -sL "https://docs.google.com/document/d/<DOC_ID>/export?format=txt"`。核对 A 是强制门禁，不是可选项。
 - 若 A 无法访问或内容不明确：立即告知用户，不要凭记忆假设要求，也不要继续 commit。
 - A 是需求的实时来源，禁止在仓库里缓存/复制一份需求文本当依据（会过期）。
@@ -50,7 +52,7 @@
 - [ ] 测试通过？模拟（dry-run）通过？
 - [ ] 已核对需求文档 A，本次改动没有不符合项？（有不符合项时先告知用户并停止 commit）
 - [ ] 若本次是最终成果提交：已通读 guideline B 并逐条核对？
-- [ ] report 内容写到文档 C，没有只留在本地？
+- [ ] 若涉及 report：已给出英文草稿与修改建议，且未经授权没有写入文档 C？
 - [ ] 是否只包含本次改动，没有无关文件？
 - [ ] commit message 为英文且格式正确？
 - [ ] 给用户的结论/报告是英文，过程交流是中文？

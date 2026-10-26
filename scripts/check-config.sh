@@ -37,6 +37,8 @@ has "rule 5a: requirement/tech doc linked" '1gtXetjRMJPsyf2Oy3_ry1-jAWAEhTNbjVmH
 has "rule 5b: assignment guideline path" 'CSC60904-Deep Learning Group Assignment 30%\.pdf'
 has "rule 5c: report doc linked" '1TewRPdkWW4jRivSg-_MLOrYXNsRWVOR0tHExsaQ_LjQ'
 has "rule 5d: no cached requirements copy" '禁止在仓库里缓存'
+has "rule 5e: doc A date is internal, not assignment deadline" '内部截止日期'
+has "rule 5f: report doc read-only unless authorized" '默认只读'
 
 if grep -q '^\.DS_Store$' "$root/.gitignore" 2>/dev/null; then
   echo "PASS: .DS_Store ignored"
