@@ -52,7 +52,8 @@
 
 ## 6. 运行环境：Google Colab（训练）+ 本地 conda dev（开发/冒烟）
 
-- **交付运行环境已改为 Google Colab（免费版 T4 GPU），2026-10-27 由用户决定**；文档 A 原文写的是 `Local environment, using Anaconda, Jupyter Notebook`，本次属于**已获用户批准的偏离**，必须在 report 中说明（用户在 Google Doc 里同步这句：`Training: Google Colab (T4 GPU, mixed precision)`）。notebook 同时保留本地分支：检测不到 `google.colab` 时用本地 `data/` + `outputs/` + float32，便于本地冒烟与复现。
+- **交付运行环境已改为云端免费 T4 GPU（Google Colab / Kaggle Notebooks），2026-10-27 由用户决定**；Colab GPU 额度用尽后改走 **Kaggle Notebooks**（30 h/周，单 kernel 上限 9 h）：用 Kaggle API 提交并轮询 `hillzhangjunyi/group8-isic-seed{8,42,2026}` 三个单 seed 训练 kernel（并行），再由 `hillzhangjunyi/group8-combine` 汇总成三模型集成报告；BCN20000 以私有数据集 `hillzhangjunyi/group8-bcn20000` 上传（512 px、6,026 张、约 210 MB）。
+- **Colab 分支仍保留**；文档 A 原文写的是 `Local environment, using Anaconda, Jupyter Notebook`，本次属于**已获用户批准的偏离**，必须在 report 中说明（用户在 Google Doc 里同步这句：`Training: Google Colab (T4 GPU, mixed precision)`）。notebook 同时保留本地分支：检测不到 `google.colab` 时用本地 `data/` + `outputs/` + float32，便于本地冒烟与复现。
 - Colab 分支：`google.colab.drive.mount` 挂载 Drive，产物写到 `MyDrive/Group_8/outputs`（逐 epoch checkpoint 到 Drive，断线可续训）；数据集用 **Kaggle API** 直接下载到 `/content/data`（需要 `kaggle.json`，notebook 启动时提示上传一次），因此不需要手工上传 6 GB 数据；GPU 策略为 `mixed_float16`。
 - 本地 `conda dev` 仍用于：dev 环境内运行 notebook（CPU、float32）、静态检查、以及每轮改动前的**小样本冒烟**（subset 数据 + 1 epoch/stage，约 4 分钟）。任何 Python 执行先 `conda activate dev`。
 - 缺少依赖时由 agent 直接用 conda 安装到 `dev`（优先 `-c conda-forge`），装完复跑 import 验证；安装不得破坏已装好的 tensorflow / keras / numpy。
