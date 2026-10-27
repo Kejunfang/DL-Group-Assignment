@@ -50,14 +50,15 @@
 - **技术栈（已定）**：Part 2 统一使用 TensorFlow / Keras 单一栈（本地 `conda dev` 已安装，TensorFlow 2.21 / Keras 3.15），不写 PyTorch 训练代码；文档 A 2.2 提到的 `requires_grad / backward()` 只在报告中作文字对比，不作为实现路径。
 - **数据集与标签方案（已定）**：使用两个数据集。ISIC 2018（HAM10000，Task 3，10,015 张图 + `HAM10000_metadata.csv`）= 训练/验证/测试（7 类，病灶级切分）；ISIC 2019（25,331 张图 + `ISIC_2019_Training_GroundTruth.csv`，8 类，AKIEC 列名为 `AK`）= 外部验证（8→7 类映射，排除 SCC，须与 2018 做 hash 去重）。文档 A 的数据集清单中，`SIIM-ISIC 2020` 已被用户标注为 `Not Use`，`Skin Cancer HAM10000` 就是本文的 ISIC 2018 数据（同一批 10,015 张图，不重复计数），因此本方案与文档 A **一致、无偏离**；report 只需简述第三个数据集因体量原因未使用。全项目统一 7 类标签空间：`MEL, NV, BCC, AKIEC, BKL, DF, VASC`。
 
-## 6. 运行环境：本地 conda dev（交付环境）
+## 6. 运行环境：Google Colab（训练）+ 本地 conda dev（开发/冒烟）
 
-- 交付运行环境为本地 `conda dev`（文档 A 已从 Google Colab 改为 `Local environment, using Anaconda, Jupyter Notebook`）；训练、校验、出图全部在本地执行。
-- 任何 Python 执行必须先 `conda activate dev`，不要在 `base` 环境里跑项目代码；notebook 不依赖 Colab 专有 API（不 import `google.colab`），保持纯 TensorFlow / Keras + 相对路径即可运行。
+- **交付运行环境已改为 Google Colab（免费版 T4 GPU），2026-10-27 由用户决定**；文档 A 原文写的是 `Local environment, using Anaconda, Jupyter Notebook`，本次属于**已获用户批准的偏离**，必须在 report 中说明（用户在 Google Doc 里同步这句：`Training: Google Colab (T4 GPU, mixed precision)`）。notebook 同时保留本地分支：检测不到 `google.colab` 时用本地 `data/` + `outputs/` + float32，便于本地冒烟与复现。
+- Colab 分支：`google.colab.drive.mount` 挂载 Drive，产物写到 `MyDrive/Group_8/outputs`（逐 epoch checkpoint 到 Drive，断线可续训）；数据集用 **Kaggle API** 直接下载到 `/content/data`（需要 `kaggle.json`，notebook 启动时提示上传一次），因此不需要手工上传 6 GB 数据；GPU 策略为 `mixed_float16`。
+- 本地 `conda dev` 仍用于：dev 环境内运行 notebook（CPU、float32）、静态检查、以及每轮改动前的**小样本冒烟**（subset 数据 + 1 epoch/stage，约 4 分钟）。任何 Python 执行先 `conda activate dev`。
 - 缺少依赖时由 agent 直接用 conda 安装到 `dev`（优先 `-c conda-forge`），装完复跑 import 验证；安装不得破坏已装好的 tensorflow / keras / numpy。
-- **算力约束**：本机为 Apple M4、CPU-only（TF 看不到 GPU），ResNet-50 @224 训练约 5.6–6.7 张/秒，全量微调 1 epoch 约 25–30 分钟；训练必须逐 epoch 保存 checkpoint 并支持断点续训，时间不够时优先减少 epoch 或冻结主干，而不是降低评估口径。
-- **已定训练配方（2026-10-27，用户指定 epochs = 100）**：batch 32；stage A 冻结主干 3 epochs @ Adam `1e-3`；stage B 解冻 `conv4`/`conv5`（BatchNorm 全程冻结）97 epochs，cosine `3e-5 → 1e-6`；loss 用普通 one-hot categorical cross-entropy（不做类权重）；按 val accuracy 选最优 checkpoint（平局取更早 epoch），并额外记录 val macro F1 供分析。实测只微调 conv4/conv5 时约 6 分钟/epoch，100 epochs 合计约 10 小时；数据缓存复用 `outputs/cache/`，跑前不要删除，训练产物在 `outputs/model/`（`last.weights.h5` 用于断点续训，`best.weights.h5` 用于评估）。
-- **数据路径与本地运行**：两个数据集由用户**手动从 Kaggle 下载并解压进项目 `data/`**（`data/` 已 git 忽略），notebook 不写自动下载代码。本地实际布局：`data/ISIC 2018/` = HAM10000（`HAM10000_metadata.csv` + 10,015 张 jpg，允许嵌套子目录；随包下载的 Task 1-2 分割图与掩码不属于本 assignment 的分类任务，可保留也可删除）；`data/ISIC 2019/` = 8 类训练集（`ISIC_2019_Training_GroundTruth.csv` + 25,331 张 jpg，按类分子目录）。notebook 一律用 `DATA_ROOT` / `OUT_DIR` 变量拼路径并用 `rglob` 递归查找文件，禁止硬编码个人绝对路径；生成物写入 `outputs/`（已 git 忽略）。训练与出图在本地 `conda dev` 完成。
+- **算力约束（本地 M4，CPU-only）**：ResNet-50 @224 训练约 5.6–6.7 张/秒，全量微调 1 epoch 约 25–30 分钟；Colab T4 上 224 分辨率约 1 分钟/epoch（100 个 epoch/seed 约 2 小时）。训练必须逐 epoch（或每 5 个 epoch）+ 断点续训，时间不够时优先减少 epoch 或冻结主干，而不是降低评估口径。
+- **已定训练配方（2026-10-27，用户指定每个模型 epochs = 100、目标 val accuracy > 90%）**：训练集 = ISIC 2018 train（7,028）+ ISIC 2019 去重后的 65%（9,644）= **16,672 张**（MEL 2,998，NV 占比 52%）；验证 = ISIC 2018 validation（1,488）；测试 = ISIC 2018 test（1,499）；外部验证 = ISIC 2019 留出的 35%（**5,193 张**，训练不可见）。**3 个 seed（8 / 42 / 2026）各 100 epochs**：stage A 3 epochs @224（冻结主干，Adam `1e-3`）；stage B 85 epochs @224（解冻 conv4/conv5，BatchNorm 冻结，cosine `3e-5 → 1e-6`）；stage C 12 epochs @320（cosine `3e-6 → 1e-7`，渐进分辨率）；loss = categorical cross-entropy + label smoothing 0.1；预测 = 三模型 + 4 视图 TTA 平均；每个 seed 在"最佳 val accuracy checkpoint"和"最后 5 epoch 的 SWA 平均"之间按 val accuracy 择优；温度缩放在验证集上拟合。预期 val accuracy 87–91%（90% 属于乐观上界）。
+- **数据路径与本地运行**：本地开发时 `data/` 由用户手动从 Kaggle 下载并解压（`data/` 已 git 忽略）：`data/ISIC 2018/` = HAM10000（`HAM10000_metadata.csv` + 10,015 张 jpg，允许嵌套子目录）；`data/ISIC 2019/` = 8 类训练集（`ISIC_2019_Training_GroundTruth.csv` + 25,331 张 jpg，按类分子目录）。notebook 一律用 `DATA_ROOT` / `OUT_DIR` 变量拼路径并用 `rglob` 递归查找文件，禁止硬编码个人绝对路径；生成物写入 `outputs/`（已 git 忽略）。
 
 ## 提交前自查清单
 

@@ -46,7 +46,8 @@ has "rule 5i: two-dataset label plan recorded" '使用两个数据集'
 has "rule 5k: SIIM-ISIC 2020 marked Not Use in doc A" 'SIIM-ISIC 2020.*Not Use'
 has "rule 5j: repository is relocatable" '项目可整体搬移'
 has "rule 6a: local tests use conda dev" 'conda activate dev'
-has "rule 6b: local conda dev is the delivery runtime" '交付运行环境为本地'
+has "rule 6b: Colab is the delivery runtime and the local branch is kept" '交付运行环境已改为 Google Colab'
+has "rule 6b: local conda dev is kept as the development and smoke runtime" '本地 \`conda dev\` 仍用于'
 has "rule 6c: data roots configurable, no absolute paths" 'DATA_ROOT.*OUT_DIR'
 
 code_dir="$root/code"
