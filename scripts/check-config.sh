@@ -49,19 +49,30 @@ has "rule 6a: local tests use conda dev" 'conda activate dev'
 has "rule 6b: cloud T4 GPU is the delivery runtime" '交付运行环境已改为云端免费 T4 GPU'
 has "rule 6b: local conda dev is kept as the development and smoke runtime" '本地 \`conda dev\` 仍用于'
 has "rule 6c: data roots configurable, no absolute paths" 'DATA_ROOT.*OUT_DIR'
+has "rule 6d: local CPU backup run documented" '本地 CPU 长跑备份'
+has "rule 5g2: generated local run notebook registered" 'Group_8_Image_Recognition_local\.ipynb'
 
 code_dir="$root/code"
+delivered="$code_dir/Group_8_Image_Recognition.ipynb"
+local_run="$code_dir/Group_8_Image_Recognition_local.ipynb"
 if [ -d "$code_dir" ]; then
   echo "PASS: code/ directory present"
-  notebooks="$(find "$code_dir" -maxdepth 1 -type f -name '*.ipynb' | sort)"
-  count="$(printf '%s\n' "$notebooks" | grep -c . || true)"
-  if [ "$count" -eq 0 ]; then
-    echo "PASS: no .ipynb yet in code/ (allowed during development; final must have exactly one)"
-  elif [ "$count" -eq 1 ]; then
-    echo "PASS: exactly one .ipynb in code/ ($(basename "$notebooks"))"
+  expected="$(printf '%s\n%s\n' "$delivered" "$local_run" | sort)"
+  found="$(find "$code_dir" -maxdepth 1 -type f -name '*.ipynb' | sort)"
+  if [ "$found" = "$expected" ]; then
+    echo "PASS: code/ holds exactly the delivered notebook and the generated local run notebook"
   else
-    echo "FAIL: expected at most one .ipynb in code/, found $count"
+    echo "FAIL: code/ must hold exactly $(basename "$delivered") and $(basename "$local_run")"
+    printf 'found:\n%s\n' "$found"
     fail=1
+  fi
+  if [ -f "$local_run" ]; then
+    if python3 "$root/scripts/build_local_runner.py" --check >/dev/null 2>&1; then
+      echo "PASS: local run notebook is in sync with the delivered notebook"
+    else
+      echo "FAIL: local run notebook is stale, run: python3 scripts/build_local_runner.py"
+      fail=1
+    fi
   fi
 else
   echo "FAIL: code/ directory not found"
