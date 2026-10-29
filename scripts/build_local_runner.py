@@ -95,6 +95,10 @@ ANCHOR_MERGE = "# Merge the extra ISIC 2019 images"
 ANCHOR_PLAN = "# 2.10 - Training plan"
 SPLIT_AFTER = "CHECKPOINT_EVERY = 5"
 ANCHOR_SEED_LOOP = "for seed in SEEDS:"
+# Fixed kernel metadata: the delivered notebook is run in Jupyter, which rewrites its metadata and
+# stores outputs. Neither belongs in a generated copy, so --check compares code and markdown only.
+METADATA = {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
+            "language_info": {"name": "python"}}
 
 
 def read_notebook():
@@ -128,6 +132,13 @@ def code_cell(cell_id, text):
             "outputs": [], "source": text.splitlines(keepends=True)}
 
 
+def clean_cell(cell):
+    """A delivered cell without the outputs and execution count a Jupyter run leaves behind."""
+    if cell["cell_type"] != "code":
+        return cell
+    return {**cell, "execution_count": None, "outputs": []}
+
+
 def split_training_cell(cell):
     """Split the training cell after CHECKPOINT_EVERY so the plan override runs before the loop."""
     lines = cell["source"]
@@ -143,7 +154,7 @@ def split_training_cell(cell):
 def build():
     """Assemble the local notebook: header markdown, the delivered cells, three settings cells."""
     notebook = read_notebook()
-    cells = notebook["cells"]
+    cells = [clean_cell(cell) for cell in notebook["cells"]]
     config_cell = find(cells, ANCHOR_CONFIG)
     merge_cell = find(cells, ANCHOR_MERGE)
     plan_cell = find(cells, ANCHOR_PLAN)
@@ -160,7 +171,7 @@ def build():
         if index == merge_cell:
             built.append(code_cell("local-run-smoke", SETTINGS_SMOKE))
 
-    return {"cells": built, "metadata": notebook["metadata"], "nbformat": 4, "nbformat_minor": 5}
+    return {"cells": built, "metadata": METADATA, "nbformat": 4, "nbformat_minor": 5}
 
 
 def main():
