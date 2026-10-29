@@ -98,7 +98,9 @@ ANCHOR_SEED_LOOP = "for seed in SEEDS:"
 # Fixed kernel metadata: the delivered notebook is run in Jupyter, which rewrites its metadata and
 # stores outputs. Neither belongs in a generated copy, so --check compares code and markdown only.
 METADATA = {"kernelspec": {"display_name": "Python 3", "language": "python", "name": "python3"},
-            "language_info": {"name": "python"}}
+            "language_info": {"codemirror_mode": {"name": "ipython", "version": 3},
+                              "file_extension": ".py", "mimetype": "text/x-python", "name": "python",
+                              "nbconvert_exporter": "python", "pygments_lexer": "ipython3"}}
 
 
 def read_notebook():
