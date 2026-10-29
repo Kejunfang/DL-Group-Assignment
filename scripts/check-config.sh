@@ -53,18 +53,20 @@ has "rule 6d: local CPU backup run documented" '本地 CPU 长跑备份'
 has "rule 6e: v2 regularisation recorded" 'AdamW.*解耦权重衰减'
 has "rule 6f: rejected levers recorded" '已否决的做法'
 has "rule 5g2: generated local run notebook registered" 'Group_8_Image_Recognition_local\.ipynb'
+has "rule 5g3: generated Colab run notebook registered" 'Group_8_Image_Recognition_colab\.ipynb'
 
 code_dir="$root/code"
 delivered="$code_dir/Group_8_Image_Recognition.ipynb"
 local_run="$code_dir/Group_8_Image_Recognition_local.ipynb"
+colab_run="$code_dir/Group_8_Image_Recognition_colab.ipynb"
 if [ -d "$code_dir" ]; then
   echo "PASS: code/ directory present"
-  expected="$(printf '%s\n%s\n' "$delivered" "$local_run" | sort)"
+  expected="$(printf '%s\n%s\n%s\n' "$delivered" "$local_run" "$colab_run" | sort)"
   found="$(find "$code_dir" -maxdepth 1 -type f -name '*.ipynb' | sort)"
   if [ "$found" = "$expected" ]; then
-    echo "PASS: code/ holds exactly the delivered notebook and the generated local run notebook"
+    echo "PASS: code/ holds exactly the delivered notebook and the generated local and Colab run notebooks"
   else
-    echo "FAIL: code/ must hold exactly $(basename "$delivered") and $(basename "$local_run")"
+    echo "FAIL: code/ must hold exactly $(basename "$delivered"), $(basename "$local_run") and $(basename "$colab_run")"
     printf 'found:\n%s\n' "$found"
     fail=1
   fi
@@ -73,6 +75,14 @@ if [ -d "$code_dir" ]; then
       echo "PASS: local run notebook is in sync with the delivered notebook"
     else
       echo "FAIL: local run notebook is stale, run: python3 scripts/build_local_runner.py"
+      fail=1
+    fi
+  fi
+  if [ -f "$colab_run" ]; then
+    if python3 "$root/scripts/build_colab_runner.py" --check >/dev/null 2>&1; then
+      echo "PASS: Colab run notebook is in sync with the delivered notebook"
+    else
+      echo "FAIL: Colab run notebook is stale, run: python3 scripts/build_colab_runner.py"
       fail=1
     fi
   fi
