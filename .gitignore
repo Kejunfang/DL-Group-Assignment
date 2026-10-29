@@ -16,3 +16,6 @@ old_code/
 # Local datasets and generated artifacts (never committed)
 data/
 outputs/
+
+# Reference notebooks supplied by the user (learn the ideas, never copy or submit)
+references/

@@ -42,52 +42,36 @@ has "rule 5e: doc A date is internal, not assignment deadline" '内部截止日�
 has "rule 5f: report doc read-only unless authorized" '默认只读'
 has "rule 5g: code source registered as code/" 'code/'
 has "rule 5h: single TensorFlow/Keras stack" '统一使用 TensorFlow / Keras'
-has "rule 5i: two-dataset label plan recorded" '使用两个数据集'
+has "rule 5i: three-source label plan recorded" '使用三个数据源'
 has "rule 5k: SIIM-ISIC 2020 marked Not Use in doc A" 'SIIM-ISIC 2020.*Not Use'
 has "rule 5j: repository is relocatable" '项目可整体搬移'
-has "rule 6a: local tests use conda dev" 'conda activate dev'
-has "rule 6b: cloud T4 GPU is the delivery runtime" '交付运行环境已改为云端免费 T4 GPU'
-has "rule 6b: local conda dev is kept as the development and smoke runtime" '本地 \`conda dev\` 仍用于'
+has "rule 6a: local runs use conda dev" 'conda activate dev'
+has "rule 6b: local Anaconda Jupyter is the delivery runtime" 'Local Environment, Using Anaconda, Jupyter Notebook'
 has "rule 6c: data roots configurable, no absolute paths" 'DATA_ROOT.*OUT_DIR'
-has "rule 6d: local CPU backup run documented" '本地 CPU 长跑备份'
-has "rule 6e: v2 regularisation recorded" 'AdamW.*解耦权重衰减'
-has "rule 6f: rejected levers recorded" '已否决的做法'
-has "rule 5g2: generated local run notebook registered" 'Group_8_Image_Recognition_local\.ipynb'
-has "rule 5g3: generated Colab run notebook registered" 'Group_8_Image_Recognition_colab\.ipynb'
+has "rule 6d: training recipe recorded" '训练配方'
+has "rule 6e: references are for ideas only" '不照抄'
 
 code_dir="$root/code"
 delivered="$code_dir/Group_8_Image_Recognition.ipynb"
-local_run="$code_dir/Group_8_Image_Recognition_local.ipynb"
-colab_run="$code_dir/Group_8_Image_Recognition_colab.ipynb"
 if [ -d "$code_dir" ]; then
   echo "PASS: code/ directory present"
-  expected="$(printf '%s\n%s\n%s\n' "$delivered" "$local_run" "$colab_run" | sort)"
   found="$(find "$code_dir" -maxdepth 1 -type f -name '*.ipynb' | sort)"
-  if [ "$found" = "$expected" ]; then
-    echo "PASS: code/ holds exactly the delivered notebook and the generated local and Colab run notebooks"
+  if [ "$found" = "$delivered" ]; then
+    echo "PASS: code/ holds exactly the delivered notebook"
   else
-    echo "FAIL: code/ must hold exactly $(basename "$delivered"), $(basename "$local_run") and $(basename "$colab_run")"
+    echo "FAIL: code/ must hold exactly $(basename "$delivered")"
     printf 'found:\n%s\n' "$found"
     fail=1
   fi
-  if [ -f "$local_run" ]; then
-    if python3 "$root/scripts/build_local_runner.py" --check >/dev/null 2>&1; then
-      echo "PASS: local run notebook is in sync with the delivered notebook"
-    else
-      echo "FAIL: local run notebook is stale, run: python3 scripts/build_local_runner.py"
-      fail=1
-    fi
-  fi
-  if [ -f "$colab_run" ]; then
-    if python3 "$root/scripts/build_colab_runner.py" --check >/dev/null 2>&1; then
-      echo "PASS: Colab run notebook is in sync with the delivered notebook"
-    else
-      echo "FAIL: Colab run notebook is stale, run: python3 scripts/build_colab_runner.py"
-      fail=1
-    fi
-  fi
 else
   echo "FAIL: code/ directory not found"
+  fail=1
+fi
+
+if grep -q '^references/$' "$root/.gitignore" 2>/dev/null; then
+  echo "PASS: references/ ignored"
+else
+  echo "FAIL: references/ not listed in .gitignore"
   fail=1
 fi
 

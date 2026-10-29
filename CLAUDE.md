@@ -14,16 +14,13 @@
 - **规则 3 / 4（提交门禁）**，每次 commit 按顺序执行，任一步失败就修好后从头再来：
   1. `git status` + `git diff`，确认只包含本次改动；
   2. `bash scripts/check-config.sh`，退出码必须为 0；
-  3. 改了 notebook 时：先 `python3 scripts/build_local_runner.py` 与 `python3 scripts/build_colab_runner.py`
-     重新生成本地副本和 Colab 副本，再做冒烟测试（改了 Colab 设置单元时，同样方法冒烟 Colab 副本）——把
-     `code/Group_8_Image_Recognition_local.ipynb` 用 `jupyter nbconvert --to script` 导出，设
-     `G8_SMOKE=1 G8_STAGE_EPOCHS=1,1,1 G8_SEEDS=8 G8_RUN_ROOT=<全新的临时目录>` 后用 `conda run -n dev` 前台运行，
-     检查日志里三个 stage、选模和结果 zip 都完成。不要复用 `outputs/local_run_smoke/`：旧的训练历史会让
-     训练单元直接跳过，测不到改动；
+  3. 改了 notebook 时做冒烟测试：把 `code/Group_8_Image_Recognition.ipynb` 用 `jupyter nbconvert --to script`
+     导出到 scratchpad，设 `G8_SMOKE=1 G8_OUT_DIR=<全新的临时目录>` 后用 `conda run -n dev` 前台运行，检查日志里
+     两个训练阶段、测试评估和所有图表单元都完成。每次用全新的 `G8_OUT_DIR`：旧的 checkpoint 会让训练单元直接
+     续训或跳过，测不到改动；
   4. 用 `curl -sL "https://docs.google.com/document/d/<DOC_ID>/export?format=txt"` 重新读文档 A，核对本次改动；
   5. commit 格式 `<type>: <summary>`，正文写清跑过哪些检查。
-- **改 notebook**：只改交付 notebook `code/Group_8_Image_Recognition.ipynb`，本地副本和 Colab 副本只能重新生成、不得手改。
-  保持原有 JSON 格式（`indent=1`、非 ASCII 字符不转义），否则 diff 会被格式噪声淹没。
+- **改 notebook**：`code/` 下只有交付 notebook `code/Group_8_Image_Recognition.ipynb` 一个文件。保持原有 JSON 格式（`indent=1`、非 ASCII 字符不转义），否则 diff 会被格式噪声淹没。
 - **Python 环境**：一律在 conda `dev` 中运行（`conda run -n dev python ...`）。`conda run` 不转发 stdin，
   heredoc 形式的脚本要先写成文件再运行。
 - **临时代码**：一次性的验证脚本、推理检查放在会话的 scratchpad 目录，不进仓库（规则 5 D：项目的 Python
