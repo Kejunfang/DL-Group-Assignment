@@ -50,6 +50,8 @@ has "rule 6b: cloud T4 GPU is the delivery runtime" '交付运行环境已改为
 has "rule 6b: local conda dev is kept as the development and smoke runtime" '本地 \`conda dev\` 仍用于'
 has "rule 6c: data roots configurable, no absolute paths" 'DATA_ROOT.*OUT_DIR'
 has "rule 6d: local CPU backup run documented" '本地 CPU 长跑备份'
+has "rule 6e: v2 regularisation recorded" 'AdamW.*解耦权重衰减'
+has "rule 6f: rejected levers recorded" '已否决的做法'
 has "rule 5g2: generated local run notebook registered" 'Group_8_Image_Recognition_local\.ipynb'
 
 code_dir="$root/code"
