@@ -51,9 +51,10 @@
 - **技术栈（已定）**：Part 2 统一使用 TensorFlow / Keras 单一栈（本地 `conda dev` 已安装，TensorFlow 2.21 / Keras 3.15），不写 PyTorch 训练代码；文档 A 2.2 提到的 `requires_grad / backward()` 只在报告中作文字对比，不作为实现路径。
 - **数据集与标签方案（2026-10-29 重写版）**：使用三个数据源，全部映射到统一的 7 类标签空间 `MEL, NV, BCC, AKIEC, BKL, DF, VASC`。① HAM10000（文档 A 的 `Skin Cancer HAM10000`，10,015 张，`HAM10000_metadata.csv`）按 `lesion_id` 做病灶级分层切分 70/15/15 = 训练/验证/测试；② ISIC 2019 训练集（25,331 张，8 类，AKIEC 列名为 `AK`）里已包含全部 10,015 张 HAM10000 图（同一 `ISIC_xxxxxxx` 编号），按编号去掉这些图、再去掉 SCC 后的约 14,885 张**全部并入训练**；③ BCN20000（ISIC 2019 官方 test set 中有标签的部分，去掉 UNK 与 SCC 后 6,026 张）**全部并入训练**。验证集与测试集只来自 HAM10000，不含任何额外数据。文档 A 的数据集清单把 `ISIC 2018` 与 `SIIM-ISIC 2020` 标注为 `Not Use`，HAM10000 与 ISIC 2018 Task 3 是同一批图，本方案用的是 Kaggle HAM10000 版本，因此与文档 A **一致、无偏离**；report 需写明 ISIC 2019 与 BCN20000 的角色是“额外训练数据”。
 
-## 6. 运行环境：本地 Anaconda `conda dev` + Jupyter Notebook
+## 6. 运行环境：本地 Anaconda `conda dev` + Jupyter Notebook，或 Kaggle Notebooks（GPU）
 
 - **2026-10-29 用户决定推翻旧代码、从零重写**：旧的三份 notebook（交付版 + 本地副本 + Colab 副本）、`scripts/build_local_runner.py`、`scripts/build_colab_runner.py`、`scripts/run-local.sh` 已删除，只在 git 历史里可查；Colab / Kaggle 云端训练分支随之取消。运行环境回到文档 A 写的 `Local Environment, Using Anaconda, Jupyter Notebook`，**与文档 A 一致，无偏离**。
+- **Kaggle GPU 运行（2026-10-29 由用户要求增加，本地 CPU 太慢）**：不另建 notebook，同一份交付 notebook 检测到 `/kaggle/input` 时自动切换：数据从 Kaggle 挂载的数据集读取（按标签文件 `HAM10000_metadata.csv` / `ISIC_2019_Training_GroundTruth.csv` / `ISIC_2019_Test_GroundTruth.csv` 定位文件夹），产物写 `/kaggle/working/outputs`。用户在 Kaggle 上 Import Notebook，Add Input 三个数据集 `kmader/skin-cancer-mnist-ham10000`、`andrewmvd/isic-2019`、`hillzhangjunyi/group8-bcn20000`（私有，512 px，6,026 张），Accelerator 选 GPU、Internet 打开，再 `Save & Run All (Commit)`。训练配方与本地完全相同（float32，不加混合精度）。文档 A 写的是 `Local Environment, Using Anaconda, Jupyter Notebook`：在 Kaggle 上训练属于**用户批准的偏离**，report 必须说明（本地分支仍保留，代码在本地照样能跑）。
 - 本地机器：Apple M4，16 GB 内存，TensorFlow 只用 CPU（float32）。任何 Python 执行先 `conda activate dev`（agent 用 `conda run -n dev ...`）。
 - **正式训练由用户在 Jupyter 中亲自运行**：用户需要 notebook 里内嵌的训练过程与可视化输出交给老师，因此 agent **不得**在后台代跑正式训练（`nohup`、后台 `python` 等）。agent 只负责改代码、跑分钟级的冒烟测试与小规模推理验证、交代运行方法、分析用户跑出的结果。
 - **冒烟测试**：notebook 读两个环境变量，只用于测试——`G8_SMOKE=1`（每类每个 split 只取 8 张、每阶段 1 epoch）、`G8_OUT_DIR=<目录>`（产物写到别处，不碰 `outputs/`）。在 Jupyter 里正常 `Run All` 时两者都不设。
