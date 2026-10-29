@@ -45,6 +45,7 @@
 - A 与 C 可公开只读，取全文用：`curl -sL "https://docs.google.com/document/d/<DOC_ID>/export?format=txt"`。核对 A 是强制门禁，不是可选项。
 - 若 A 无法访问或内容不明确：立即告知用户，不要凭记忆假设要求，也不要继续 commit。
 - A 是需求的实时来源，禁止在仓库里缓存/复制一份需求文本当依据（会过期）。
+- `CLAUDE.md` 是 Claude Code 的入口：它用 `@AGENTS.md` 导入本文件，只补充 Claude 专用的落实细节，不另立规则；规则只在本文件维护。
 - B 只在最终提交前整体核对，避免日常按局部 guideline 误判范围。
 - **项目可整体搬移**：仓库内一律使用相对项目根目录的路径，不得写入个人主目录的绝对路径（即 `~` 展开后的路径）；整个文件夹可移动到任意目录，移动后必须复核 `git status`（应为 clean）与 `bash scripts/check-config.sh`（应 PASS）。`data/`、`old_code/`、`outputs/` 不在 git 里，搬移或换机器时必须单独拷贝 `data/`，否则 notebook 找不到数据集。
 - **技术栈（已定）**：Part 2 统一使用 TensorFlow / Keras 单一栈（本地 `conda dev` 已安装，TensorFlow 2.21 / Keras 3.15），不写 PyTorch 训练代码；文档 A 2.2 提到的 `requires_grad / backward()` 只在报告中作文字对比，不作为实现路径。
