@@ -17,5 +17,8 @@ old_code/
 data/
 outputs/
 
+# Frozen copy of the final executed notebook (outputs contain local paths)
+final_outcome/
+
 # Reference notebooks supplied by the user (learn the ideas, never copy or submit)
 references/
