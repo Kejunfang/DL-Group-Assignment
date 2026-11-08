@@ -53,10 +53,14 @@ global average pooling → dropout 0.3 → concatenate with the metadata → Den
 
 | Setting | Value |
 |---------|-------|
-| Stage 1 | backbone frozen, train the head for 2 epochs, Adam 1e-3 |
-| Stage 2 | fine-tune for 10 epochs, Adam 5e-5 with cosine decay to 1e-6 |
+| Stage 1 | backbone frozen, train the head for 2 epochs, AdamW 1e-3 |
+| Stage 2 | fine-tune for 10 epochs, AdamW 5e-5 with cosine decay to 1e-6 |
 | Loss | categorical cross-entropy |
-| Regularisation | dropout 0.3, Adam weight decay 0.05 |
+| Regularisation | dropout 0.3, AdamW decoupled weight decay 0.05 |
+
+The optimizer is **AdamW** — Adam with decoupled weight decay 0.05 (Loshchilov & Hutter 2019) — written in
+the notebook as `keras.optimizers.Adam(..., weight_decay=0.05)`, which in Keras 3 is decoupled and therefore
+equivalent to AdamW.
 | Augmentation (training only) | horizontal / vertical flip, rotation up to ±90°, zoom 15%, brightness / contrast 10% |
 | Batch size | 16 |
 | Model selection | best validation accuracy. The test set is used once, at the end. |
