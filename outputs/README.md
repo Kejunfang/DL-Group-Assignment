@@ -42,11 +42,13 @@ kept because the report's Part 1 discussion of what did not work is based on the
 | `run_384px_image_split_meta/` | v5, patient metadata + HAM10000 fine-tune stage | 0.8495 | 0.8583 |
 | `run_384px_resnet152/` | v6, ResNet-152 backbone | 0.8555 | 0.8643 |
 | `run_384px_binary/` | v7, benign / malignant, binary head | 0.8915 | 0.9015 |
-| `run_384px_binary_v2/` | v8, weaker regularisation, 12 epochs (also holds the earlier 2-model weight average) | 0.8908 | 0.8975 |
+| `run_384px_binary_v2/` | v8, weaker regularisation, 12 epochs | 0.8908 | 0.8975 |
 | `run_384px_binary_v3/` | v9, whole backbone unfrozen, 10 epochs | 0.8961 | 0.9042 |
 
 The first five runs predict 7 classes; their validation and test numbers are 7-class accuracy. The
-report's benign / malignant discussion uses the binary runs (v7 onwards).
+report's benign / malignant discussion uses the binary runs (v7 onwards). `run_384px_binary_v2/summary.csv`
+additionally lists the numbers of the weight-averaged model built from v7 + v8 (validation 0.8948, test
+0.9049); the table above gives the single v8 run, which is what the report compares.
 
 ## `reports/` — report build artifacts
 
