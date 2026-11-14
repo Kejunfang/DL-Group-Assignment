@@ -1,3 +1,5 @@
+> **2026-11-14:** the submission folder `final_outcome/` was renamed to `final_submission/`; paths written as `final_outcome/...` in this report refer to that folder under its old name.
+
 # Guideline and Content Check Report - Group 8 (Bravo 8)
 
 Date: 7 November 2026
