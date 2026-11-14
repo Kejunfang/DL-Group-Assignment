@@ -57,14 +57,14 @@ global average pooling → dropout 0.3 → concatenate with the metadata → Den
 | Stage 2 | fine-tune for 10 epochs, AdamW 5e-5 with cosine decay to 1e-6 |
 | Loss | categorical cross-entropy |
 | Regularisation | dropout 0.3, AdamW decoupled weight decay 0.05 |
-
-The optimizer is **AdamW** — Adam with decoupled weight decay 0.05 (Loshchilov & Hutter 2019) — written in
-the notebook as `keras.optimizers.Adam(..., weight_decay=0.05)`, which in Keras 3 is decoupled and therefore
-equivalent to AdamW.
 | Augmentation (training only) | horizontal / vertical flip, rotation up to ±90°, zoom 15%, brightness / contrast 10% |
 | Batch size | 16 |
 | Model selection | best validation accuracy. The test set is used once, at the end. |
 | Seed | 8 |
+
+The optimizer is **AdamW** — Adam with decoupled weight decay 0.05 (Loshchilov & Hutter 2019) — written in
+the notebook as `keras.optimizers.Adam(..., weight_decay=0.05)`, which in Keras 3 is decoupled and therefore
+equivalent to AdamW.
 
 ### Results (final run, 2 November 2026)
 
@@ -96,15 +96,59 @@ Only TensorFlow / Keras is used. PyTorch is not needed.
 ## Project layout
 
 ```
-code/Group_8_Image_Recognition.ipynb   the only code file (deliverable)
-data/                                  datasets, downloaded by hand (git-ignored)
-outputs/                               resized images, weights, histories, figures (git-ignored)
-final_outcome/                         frozen copy of the final executed notebook (git-ignored)
-scripts/check-config.sh                checks the project rules in AGENTS.md
-AGENTS.md, CLAUDE.md                   rules for the AI agents working on this project
+CSC60904-Deep Learning Group Assignment 30%.pdf   assignment guideline (the marking scheme)
+README.md                                         this file
+AGENTS.md, CLAUDE.md                               project rules for the AI agents working on the code
+code/Group_8_Image_Recognition.ipynb               the only code file (deliverable)
+scripts/check-config.sh                            checks that the project rules still hold
+
+data/                                              datasets, ~19 GB, downloaded by hand (not in git)
+outputs/                                           everything the notebook produces
+  run_448px_binary/                                 Model 1 (ResNet-50, 448 px): figures, tables, executed notebook
+  run_bit_384px_binary/                             Model 2 (BiT-M ResNet-50x1): weights, history, executed notebook
+  resized_384/, resized_448/                        images pre-scaled once to that size (not in git)
+  cache/                                            resize caches of the retired 224 px and InceptionV3 runs
+  history/                                          the nine earlier runs, one folder each, with their numbers
+  reports/                                          final report .docx / .pdf, guideline checks, earlier builds
+  experiments/                                      backbone comparison (InceptionV3, BiT-M) and its numbers
+  colab/, kaggle/                                   the notebook as run on Colab / Kaggle
+final_outcome/                                      the files handed in to the lecturer: report .docx / .pdf and the
+                                                    executed notebook, frozen (do not modify)
+ai_check/                                           AI-writing and similarity check reports
+references/                                         reference notebooks supplied by the user (not in git)
 ```
 
+`outputs/README.md` maps every folder above to the run behind it and its validation / test accuracy.
+
+## What is and is not in this repository
+
+In git: the notebook, the README and rules, the assignment guideline, the final report, the figures and
+CSV tables of every run, the executed notebooks, and the AI / similarity reports.
+
+Not in git, because they are too large for GitHub or easy to regenerate:
+
+| Not in git | Size | How to get it back |
+|------------|------|--------------------|
+| `data/` | 19 GB | Download the three datasets, see step 2 below. |
+| `outputs/resized_384/`, `outputs/resized_448/`, `outputs/cache/` | 4.4 GB | Rebuilt automatically on the first run (10–20 minutes). |
+| `outputs/**/model/*.weights.h5` | ~4 GB | Rebuilt by re-running the notebook (13.5 hours). |
+| `outputs/colab/g8_data.zip` | 1.0 GB | Only needed for the Colab experiment. |
+| `references/` | 9 MB | Reference notebooks, not part of the submission. |
+
+A fresh clone therefore has the code and every reported result, but trains from scratch when you press
+*Run All*. Training on the ResNet-50 and then the BiT-M model takes about 7.5 h + 6 h on an Apple M4 GPU.
+
 ## How to run
+
+### 0. Get the files
+
+You need conda (Anaconda or Miniconda) and git. Then:
+
+```bash
+git clone <this repository> && cd "DL Group Assignment"
+```
+
+If `data/` is missing afterwards, that is expected — it is not in git, see step 2.
 
 ### 1. Set up the environment (once)
 
@@ -160,7 +204,27 @@ Then select the kernel `Python 3.12 (dev-metal, GPU)` and use **Run All**.
 - **Re-running for results only:** if `outputs/run_448px_binary/model/` and `outputs/run_bit_384px_binary/model/`
   already hold the trained weights, *Run All* skips training and only evaluates.
 - **Where the results go:** figures and tables are written to `outputs/run_448px_binary/`, and the BiT model
-  to `outputs/run_bit_384px_binary/`.
+  to `outputs/run_bit_384px_binary/`. `outputs/README.md` explains every folder under `outputs/`.
+- **Which numbers to expect:** the final model scores 0.9075 validation and 0.9148 test. A fresh training run
+  is seeded, but GPU libraries still vary a little, so expect about ±0.5 points.
+
+### 4. Check that the project is intact
+
+```bash
+bash scripts/check-config.sh
+```
+
+It prints `RESULT: PASS` when the rules in `AGENTS.md` hold: the notebook is the only file in `code/`, the
+dropped SIIM-ISIC 2020 dataset is not loaded, and the ignore rules are in place.
+
+### Where the submitted files are
+
+| Folder | Content |
+|--------|---------|
+| `code/Group_8_Image_Recognition.ipynb` | the code we hand in |
+| `final_outcome/` | exactly what was handed in: report `.docx` / `.pdf` and the executed notebook with all outputs |
+| `outputs/reports/` | the report build and the guideline / format checks |
+| `ai_check/` | AI-writing and similarity check reports |
 
 ### Running on Kaggle (optional)
 

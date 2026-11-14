@@ -1,0 +1,30 @@
+InceptionV3 299px
+Validation all images 0.8356 | new lesions 0.8780 | lesions also in training 0.7623
+              precision    recall  f1-score   support
+
+         MEL      0.682     0.347     0.460       167
+          NV      0.892     0.956     0.923      1006
+         BCC      0.866     0.753     0.806        77
+       AKIEC      0.593     0.327     0.421        49
+         BKL      0.636     0.794     0.706       165
+          DF      0.667     0.706     0.686        17
+        VASC      0.900     0.857     0.878        21
+
+    accuracy                          0.836      1502
+   macro avg      0.748     0.677     0.697      1502
+weighted avg      0.827     0.836     0.822      1502
+
+Test       all images 0.8470 | new lesions 0.8920 | lesions also in training 0.7598
+              precision    recall  f1-score   support
+
+         MEL      0.711     0.383     0.498       167
+          NV      0.899     0.957     0.927      1006
+         BCC      0.853     0.753     0.800        77
+       AKIEC      0.840     0.429     0.568        49
+         BKL      0.640     0.861     0.734       165
+          DF      0.800     0.471     0.593        17
+        VASC      1.000     0.773     0.872        22
+
+    accuracy                          0.847      1503
+   macro avg      0.820     0.661     0.713      1503
+weighted avg      0.846     0.847     0.836      1503

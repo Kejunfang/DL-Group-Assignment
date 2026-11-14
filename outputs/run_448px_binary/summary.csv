@@ -1,0 +1,14 @@
+,value
+training images,28517
+validation images,1502
+test images,1503
+epochs,12
+best epoch,12
+best validation accuracy (ResNet-50),0.8948
+best epoch (BiT),12
+validation accuracy (final model),0.9075
+training accuracy HAM10000 (final model),0.947
+training accuracy all sources (final model),0.94
+test accuracy,0.9148
+test loss,0.2021
+ECE,0.0259

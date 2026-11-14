@@ -82,6 +82,22 @@ else
   fail=1
 fi
 
+spaced="$(find "$root" -mindepth 1 -maxdepth 1 -type d -name '* *' -print 2>/dev/null || true)"
+if [ -z "$spaced" ]; then
+  echo "PASS: no top-level folder name contains a space"
+else
+  echo "FAIL: top-level folder name contains a space:"
+  printf '%s\n' "$spaced"
+  fail=1
+fi
+
+if [ -f "$root/outputs/README.md" ]; then
+  echo "PASS: outputs/README.md maps the generated folders"
+else
+  echo "FAIL: outputs/README.md missing"
+  fail=1
+fi
+
 notebook="$code_dir/Group_8_Image_Recognition.ipynb"
 if [ -f "$notebook" ] && grep -q 'siim2020' "$notebook"; then
   echo "FAIL: notebook still loads the dropped SIIM-ISIC 2020 dataset"

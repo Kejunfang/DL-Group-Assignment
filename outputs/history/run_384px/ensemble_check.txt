@@ -1,0 +1,8 @@
+Post-hoc checks on the trained models (2026-10-30), lesion-level HAM10000 split
+model                                   val      test
+ResNet-50 224px conv4/5 (run 1)         0.8528   0.8422
+ResNet-50 384px full (run 2)            0.8613   0.8595
+run 2 + 8-view TTA                      0.8600   0.8688
+run 1 + run 2 averaged                  0.8659   0.8622
+run 1 + run 2 averaged, 8-view TTA      0.8712   0.8662
+either model correct (upper bound)      0.8954   0.9001

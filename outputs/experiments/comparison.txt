@@ -1,0 +1,30 @@
+Backbone comparison (2026-10-30), image-level HAM10000 split, identical recipe:
+stronger augmentation, dropout 0.5, Adam weight decay 0.05, label smoothing 0.1, 2 + 8 epochs, M4 GPU.
+
+                         ResNet-50 384px      InceptionV3 299px
+best val accuracy        0.8509 (epoch 9)     0.8356 (epoch 10)
+test accuracy            0.8636               0.8470
+final train accuracy     0.856                0.880
+train - val gap          0.5 pt               4.4 pt
+test MEL recall          0.515                0.383
+test AKIEC recall        0.388                0.429
+val new lesions          0.878                0.878
+training time            ~3 h                 ~3 h (incl. 299px resize)
+
+Average of the two models' probabilities: val 0.8555, test 0.8656.
+Upper bound "either model correct":       val 0.8855, test 0.8889.
+
+Quick checks on the ResNet-50 (reg run) weights, image-level split:
+  baseline                                   val 0.8509  test 0.8636
+  + metadata (logistic regression on top)    val 0.8609  test 0.8749
+  HAM10000-only fine-tune, Adam 1e-5, ep 1   val 0.8409  test 0.8470
+                                       ep 2  val 0.8535  test 0.8616
+                                       ep 3  val 0.8522  test 0.8676
+
+ResNet-152 (run 6, same recipe as run 5 without stage 3, metadata input), 384 px, ~11 h on M4:
+  best val 0.8555 (epoch 9), test 0.8643, final train (with augmentation) 0.862, ECE 0.064
+Head check on fixed ResNet-152 features [pooled + metadata], 20 epochs, best val kept:
+  linear            train 0.8642  val 0.8622  test 0.8643
+  128               train 0.8576  val 0.8602  test 0.8643
+  128-64-32         train 0.8419  val 0.8582  test 0.8649
+  512-256           train 0.8424  val 0.8589  test 0.8689

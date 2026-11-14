@@ -1,0 +1,10 @@
+,value
+training images,27921
+validation images,1502
+test images,1503
+epochs,10
+best epoch,9
+best validation accuracy,0.8509
+test accuracy,0.8636
+test loss,0.7486
+ECE,0.0567

@@ -1,0 +1,4 @@
+best epoch 11: val_accuracy 0.8915
+val: accuracy 0.8915 | malignant recall 0.6109 | new lesions 0.9201 | seen lesions 0.8421
+test: accuracy 0.9088 | malignant recall 0.6689 | new lesions 0.9384 | seen lesions 0.8516
+train HAM10000 (no augmentation): 0.9395

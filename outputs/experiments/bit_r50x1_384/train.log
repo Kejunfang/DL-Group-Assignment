@@ -1,0 +1,111 @@
+2026-11-01 11:08:57.242235: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M4
+2026-11-01 11:08:57.242314: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2026-11-01 11:08:57.242325: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.92 GB
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793502537.242338 12416791 pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+I0000 00:00:1793502537.242361 12416791 pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+/opt/homebrew/Caskroom/miniconda/base/envs/dev-metal/lib/python3.12/site-packages/keras/src/trainers/epoch_iterator.py:74: UserWarning: `shuffle=True` was passed, but will be ignored since the data `x` was provided as a tf.data.Dataset. The Dataset is expected to already be shuffled (via `.shuffle(buffer_size)`).
+  self.data_adapter = data_adapters.get_data_adapter(
+TensorFlow: 2.18.1
+Keras: 3.15.1
+Devices: ['CPU', 'GPU']
+Running on Kaggle: False
+Project root: /Users/hill/dev/DL Group Assignment
+Outputs: /Users/hill/dev/DL Group Assignment/outputs/experiments/bit_r50x1_384
+Smoke test: False | epochs: 2 + 10 + 3
+Dataset folders:
+  /Users/hill/dev/DL Group Assignment/data/ISIC 2018
+  /Users/hill/dev/DL Group Assignment/data/ISIC 2019
+  /Users/hill/dev/DL Group Assignment/data/BCN20000
+ISIC 2019 images that are already in HAM10000 (removed): 10015
+HAM10000: 10,015 images
+ISIC 2019: 15,316 images
+BCN20000: 6,191 images
+validation: 36.7% of the images show a lesion that also has a photo in the training set
+test: 34.1% of the images show a lesion that also has a photo in the training set
+
+           train  validation  test
+label                             
+Benign     16922        1209  1210
+Malignant  11595         293   293
+Total      28517        1502  1503
+
+Images per diagnosis:
+           train  validation  test
+diagnosis                         
+AKIEC       1340          49    49
+BCC         4144          77    77
+BKL         2954         165   165
+DF           296          17    17
+MEL         5515         167   167
+NV         13358        1006  1006
+SCC          596           0     0
+VASC         314          21    22
+Baseline - always answering 'Benign' on the validation set: 0.8049
+Baseline - always answering 'Benign' on the test set: 0.8051
+
+Training images by source:
+source
+ISIC 2019    15316
+HAM10000      7010
+BCN20000      6191
+Name: count, dtype: int64
+Resizing 0 of 31,522 images (already done: 31,522)
+Done in 0 s
+Training images: 28,517 | steps per epoch: 1783
+Trainable weights in stage 1: 4118
+11:08:57  epoch 1/15 started
+Epoch 1/2
+2026-11-01 11:08:59.343058: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+1783/1783 - 870s - 488ms/step - accuracy: 0.7228 - loss: 0.8050 - val_accuracy: 0.8462 - val_loss: 0.4229 - learning_rate: 0.0010
+11:23:28  epoch 2/15 started
+Epoch 2/2
+1783/1783 - 853s - 479ms/step - accuracy: 0.7450 - loss: 0.6546 - val_accuracy: 0.7710 - val_loss: 0.5244 - learning_rate: 0.0010
+Trainable weights in stage 2: 22062102
+11:37:42  epoch 3/15 started
+Epoch 3/12
+1783/1783 - 1696s - 951ms/step - accuracy: 0.8021 - loss: 0.4392 - val_accuracy: 0.8582 - val_loss: 0.2967 - learning_rate: 5.0000e-05
+12:05:58  epoch 4/15 started
+Epoch 4/12
+1783/1783 - 1714s - 961ms/step - accuracy: 0.8379 - loss: 0.3622 - val_accuracy: 0.8702 - val_loss: 0.2881 - learning_rate: 4.8522e-05
+12:34:32  epoch 5/15 started
+Epoch 5/12
+1783/1783 - 1714s - 961ms/step - accuracy: 0.8569 - loss: 0.3281 - val_accuracy: 0.8702 - val_loss: 0.3271 - learning_rate: 4.4268e-05
+13:03:06  epoch 6/15 started
+Epoch 6/12
+1783/1783 - 1705s - 956ms/step - accuracy: 0.8739 - loss: 0.2903 - val_accuracy: 0.8768 - val_loss: 0.2683 - learning_rate: 3.7750e-05
+13:31:31  epoch 7/15 started
+Epoch 7/12
+1783/1783 - 1754s - 984ms/step - accuracy: 0.8961 - loss: 0.2461 - val_accuracy: 0.8828 - val_loss: 0.2685 - learning_rate: 2.9754e-05
+14:00:45  epoch 8/15 started
+Epoch 8/12
+1783/1783 - 1710s - 959ms/step - accuracy: 0.9162 - loss: 0.2051 - val_accuracy: 0.8868 - val_loss: 0.2643 - learning_rate: 2.1246e-05
+14:29:15  epoch 9/15 started
+Epoch 9/12
+1783/1783 - 1697s - 952ms/step - accuracy: 0.9365 - loss: 0.1597 - val_accuracy: 0.8901 - val_loss: 0.2638 - learning_rate: 1.3250e-05
+14:57:32  epoch 10/15 started
+Epoch 10/12
+1783/1783 - 1689s - 948ms/step - accuracy: 0.9484 - loss: 0.1289 - val_accuracy: 0.8895 - val_loss: 0.2891 - learning_rate: 6.7319e-06
+15:25:42  epoch 11/15 started
+Epoch 11/12
+1783/1783 - 1732s - 971ms/step - accuracy: 0.9595 - loss: 0.1062 - val_accuracy: 0.8915 - val_loss: 0.2935 - learning_rate: 2.4775e-06
+15:54:34  epoch 12/15 started
+Epoch 12/12
+1783/1783 - 1797s - 1s/step - accuracy: 0.9622 - loss: 0.0959 - val_accuracy: 0.8848 - val_loss: 0.3134 - learning_rate: 1.0000e-06
+ epoch  accuracy  learning_rate   loss  val_accuracy  val_loss
+     0    0.7228          0.001 0.8050        0.8462    0.4229
+     1    0.7450          0.001 0.6546        0.7710    0.5244
+     2    0.8021          0.000 0.4392        0.8582    0.2967
+     3    0.8379          0.000 0.3622        0.8702    0.2881
+     4    0.8569          0.000 0.3281        0.8702    0.3271
+     5    0.8739          0.000 0.2903        0.8768    0.2683
+     6    0.8961          0.000 0.2461        0.8828    0.2685
+     7    0.9162          0.000 0.2051        0.8868    0.2643
+     8    0.9365          0.000 0.1597        0.8901    0.2638
+     9    0.9484          0.000 0.1289        0.8895    0.2891
+    10    0.9595          0.000 0.1062        0.8915    0.2935
+    11    0.9622          0.000 0.0959        0.8848    0.3134
+best epoch 11: val_accuracy 0.8915
+val: accuracy 0.8915 | malignant recall 0.6109 | new lesions 0.9201 | seen lesions 0.8421
+test: accuracy 0.9088 | malignant recall 0.6689 | new lesions 0.9384 | seen lesions 0.8516
+train HAM10000 (no augmentation): 0.9395

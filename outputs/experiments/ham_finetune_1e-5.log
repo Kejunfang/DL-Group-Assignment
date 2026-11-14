@@ -1,0 +1,50 @@
+2026-10-30 17:50:39.674183: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M4
+2026-10-30 17:50:39.674209: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2026-10-30 17:50:39.674214: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.92 GB
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793353839.674223 8693424 pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+I0000 00:00:1793353839.674239 8693424 pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+/opt/homebrew/Caskroom/miniconda/base/envs/dev-metal/lib/python3.12/site-packages/keras/src/trainers/epoch_iterator.py:74: UserWarning: `shuffle=True` was passed, but will be ignored since the data `x` was provided as a tf.data.Dataset. The Dataset is expected to already be shuffled (via `.shuffle(buffer_size)`).
+  self.data_adapter = data_adapters.get_data_adapter(
+2026-10-30 17:50:43.034902: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+TensorFlow: 2.18.1
+Keras: 3.15.1
+Devices: ['CPU', 'GPU']
+Running on Kaggle: False
+Project root: /Users/hill/dev/DL Group Assignment
+Outputs: /Users/hill/dev/DL Group Assignment/outputs/run_384px_image_split_reg
+Smoke test: False | epochs: 2 + 8
+Dataset folders:
+  /Users/hill/dev/DL Group Assignment/data/ISIC 2018
+  /Users/hill/dev/DL Group Assignment/data/ISIC 2019
+  /Users/hill/dev/DL Group Assignment/data/BCN20000
+ISIC 2019 images that are already in HAM10000 (removed): 10015
+HAM10000: 10,015 images
+ISIC 2019: 14,885 images
+BCN20000: 6,026 images
+validation: 36.7% of the images show a lesion that also has a photo in the training set
+test: 34.1% of the images show a lesion that also has a photo in the training set
+
+       train  validation  test
+label                         
+MEL     5515         167   167
+NV     13358        1006  1006
+BCC     4144          77    77
+AKIEC   1340          49    49
+BKL     2954         165   165
+DF       296          17    17
+VASC     314          21    22
+Total  27921        1502  1503
+
+Training images by source:
+source
+ISIC 2019    14885
+HAM10000      7010
+BCN20000      6026
+Name: count, dtype: int64
+Resizing 0 of 30,926 images (already done: 30,926)
+Done in 0 s
+HAM train images: 7010
+lr 1e-5 HAM epoch 1: val 0.8409 test 0.8470
+lr 1e-5 HAM epoch 2: val 0.8535 test 0.8616
+lr 1e-5 HAM epoch 3: val 0.8522 test 0.8676
