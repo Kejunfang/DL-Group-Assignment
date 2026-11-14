@@ -112,8 +112,8 @@ outputs/                                           everything the notebook produ
   reports/                                          final report .docx / .pdf, guideline checks, earlier builds
   experiments/                                      backbone comparison (InceptionV3, BiT-M) and its numbers
   colab/, kaggle/                                   the notebook as run on Colab / Kaggle
-final_outcome/                                      the files handed in to the lecturer: report .docx / .pdf and the
-                                                    executed notebook, frozen, not in git (do not modify)
+final_submission/                                   the files handed in to the lecturer: report .docx / .pdf and the
+                                                    executed notebook, frozen (do not modify)
 ai_check/                                           AI-writing and similarity check reports
 references/                                         reference notebooks supplied by the user, ideas only (not part of the submission)
 ```
@@ -123,8 +123,9 @@ references/                                         reference notebooks supplied
 ## What is and is not in this repository
 
 In git: the notebook, the README and rules, the assignment guideline, the final report, the figures and
-CSV tables of every run, the executed notebooks, the AI / similarity reports, and the reference notebooks
-(kept for provenance only, none of their code is used).
+CSV tables of every run, the executed notebooks, the AI / similarity reports, the reference notebooks
+(kept for provenance only, none of their code is used), and `final_submission/` — exactly what was handed
+in to the lecturer. The repository is private.
 
 Not in git, because they are too large for GitHub or easy to regenerate:
 
@@ -134,7 +135,6 @@ Not in git, because they are too large for GitHub or easy to regenerate:
 | `outputs/resized_384/`, `outputs/resized_448/`, `outputs/cache/` | 4.4 GB | Rebuilt automatically on the first run (10–20 minutes). |
 | `outputs/**/model/*.weights.h5` | ~4 GB | Rebuilt by re-running the notebook (13.5 hours). |
 | `outputs/colab/g8_data.zip` | 1.0 GB | Only needed for the Colab experiment. |
-| `final_outcome/` | 16 MB | Submitted to the lecturer by hand; kept locally as the frozen copy. |
 
 A fresh clone therefore has the code and every reported result, but trains from scratch when you press
 *Run All*. Training on the ResNet-50 and then the BiT-M model takes about 7.5 h + 6 h on an Apple M4 GPU.
@@ -223,7 +223,7 @@ dropped SIIM-ISIC 2020 dataset is not loaded, and the ignore rules are in place.
 | Folder | Content |
 |--------|---------|
 | `code/Group_8_Image_Recognition.ipynb` | the code we hand in |
-| `final_outcome/` | exactly what was handed in: report `.docx` / `.pdf` and the executed notebook with all outputs |
+| `final_submission/` | exactly what was handed in: report `.docx` / `.pdf` and the executed notebook with all outputs |
 | `outputs/reports/` | the report build and the guideline / format checks |
 | `ai_check/` | AI-writing and similarity check reports |
 

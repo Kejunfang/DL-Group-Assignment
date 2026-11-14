@@ -98,6 +98,15 @@ else
   fail=1
 fi
 
+for f in docx pdf ipynb; do
+  if [ -f "$root/final_submission/Group_8_Image_Recognition.$f" ]; then
+    echo "PASS: final_submission/Group_8_Image_Recognition.$f present"
+  else
+    echo "FAIL: final_submission/Group_8_Image_Recognition.$f missing"
+    fail=1
+  fi
+done
+
 notebook="$code_dir/Group_8_Image_Recognition.ipynb"
 if [ -f "$notebook" ] && grep -q 'siim2020' "$notebook"; then
   echo "FAIL: notebook still loads the dropped SIIM-ISIC 2020 dataset"
