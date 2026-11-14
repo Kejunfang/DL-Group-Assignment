@@ -13,9 +13,6 @@ node_modules/
 # Datasets: ~19 GB, downloaded by hand (see README "2. Download the data")
 data/
 
-# Reference notebooks supplied by the user (learn the ideas, never copy or submit)
-references/
-
 # What was handed in to the lecturer (report + executed notebook, frozen).
 # Never modified, never committed.
 final_outcome/

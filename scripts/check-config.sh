@@ -68,10 +68,10 @@ else
   fail=1
 fi
 
-if grep -q '^references/$' "$root/.gitignore" 2>/dev/null; then
-  echo "PASS: references/ ignored"
+if [ -n "$(find "$root/references" -maxdepth 1 -type f -name '*.ipynb' 2>/dev/null)" ]; then
+  echo "PASS: references/ present as read-only reference material"
 else
-  echo "FAIL: references/ not listed in .gitignore"
+  echo "FAIL: references/ missing or empty"
   fail=1
 fi
 

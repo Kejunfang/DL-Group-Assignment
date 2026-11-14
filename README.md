@@ -107,15 +107,15 @@ outputs/                                           everything the notebook produ
   run_448px_binary/                                 Model 1 (ResNet-50, 448 px): figures, tables, executed notebook
   run_bit_384px_binary/                             Model 2 (BiT-M ResNet-50x1): weights, history, executed notebook
   resized_384/, resized_448/                        images pre-scaled once to that size (not in git)
-  cache/                                            resize caches of the retired 224 px and InceptionV3 runs
+  cache/                                            resize caches of the retired 224 px and InceptionV3 runs (not in git)
   history/                                          the nine earlier runs, one folder each, with their numbers
   reports/                                          final report .docx / .pdf, guideline checks, earlier builds
   experiments/                                      backbone comparison (InceptionV3, BiT-M) and its numbers
   colab/, kaggle/                                   the notebook as run on Colab / Kaggle
 final_outcome/                                      the files handed in to the lecturer: report .docx / .pdf and the
-                                                    executed notebook, frozen (do not modify)
+                                                    executed notebook, frozen, not in git (do not modify)
 ai_check/                                           AI-writing and similarity check reports
-references/                                         reference notebooks supplied by the user (not in git)
+references/                                         reference notebooks supplied by the user, ideas only (not part of the submission)
 ```
 
 `outputs/README.md` maps every folder above to the run behind it and its validation / test accuracy.
@@ -123,7 +123,8 @@ references/                                         reference notebooks supplied
 ## What is and is not in this repository
 
 In git: the notebook, the README and rules, the assignment guideline, the final report, the figures and
-CSV tables of every run, the executed notebooks, and the AI / similarity reports.
+CSV tables of every run, the executed notebooks, the AI / similarity reports, and the reference notebooks
+(kept for provenance only, none of their code is used).
 
 Not in git, because they are too large for GitHub or easy to regenerate:
 
@@ -133,7 +134,7 @@ Not in git, because they are too large for GitHub or easy to regenerate:
 | `outputs/resized_384/`, `outputs/resized_448/`, `outputs/cache/` | 4.4 GB | Rebuilt automatically on the first run (10–20 minutes). |
 | `outputs/**/model/*.weights.h5` | ~4 GB | Rebuilt by re-running the notebook (13.5 hours). |
 | `outputs/colab/g8_data.zip` | 1.0 GB | Only needed for the Colab experiment. |
-| `references/` | 9 MB | Reference notebooks, not part of the submission. |
+| `final_outcome/` | 16 MB | Submitted to the lecturer by hand; kept locally as the frozen copy. |
 
 A fresh clone therefore has the code and every reported result, but trains from scratch when you press
 *Run All*. Training on the ResNet-50 and then the BiT-M model takes about 7.5 h + 6 h on an Apple M4 GPU.
